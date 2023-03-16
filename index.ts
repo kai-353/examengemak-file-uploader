@@ -20,9 +20,13 @@ const upload = multer({
 });
 
 app.route("/").post(upload.single("file"), (req: Request, res: Response) => {
-  console.log(req.file);
+  // console.log(req.file);
 
-  res.send("test");
+  if (req.file) {
+    res.status(201).send({ name: req.file.originalname });
+  } else {
+    res.status(400).send({ error: "Upload failed" });
+  }
 });
 
 app.route("/:file").get((req: Request, res: Response) => {
